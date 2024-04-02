@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee List</title>
+    <!-- Add Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Add custom CSS styles -->
+    <style>
+        /* Custom styles for Employee List */
+        body {
+            background-color: #f8f9fa;
+        }
+        .employee-card {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.3s ease-in-out;
+        }
+        .employee-card:hover {
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+        .employee-name {
+            font-weight: bold;
+            color: #007bff;
+        }
+        .btn-edit {
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+            transition: background-color 0.3s ease-in-out;
+        }
+        .btn-edit:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <h1 class="text-center mb-4">Employee List</h1>
+                <a href="{% url 'employee_add' %}" class="btn btn-primary mb-3">Add Employee</a>
+                {% for employee in employees %}
+                <div class="card mb-3 employee-card">
+                    <div class="card-body">
+                        <h5 class="card-title employee-name">{{ employee.name }}</h5>
+                        <p class="card-text">{{ employee.position }}, {{ employee.department }}</p>
+                        <a href="{% url 'employee_update' employee.pk %}" class="btn btn-edit">Edit</a>
+                        <form action="{% url 'employee_delete' employee.pk %}" method="post" class="d-inline">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete {{ employee.name }}?')">Delete</button>
+                        </form>
+                    </div>
+                </div>
+                {% empty %}
+                <p>No employees found.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <!-- Add Bootstrap JS (optional, for certain components) -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
